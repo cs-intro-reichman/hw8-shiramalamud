@@ -70,20 +70,24 @@ public class Network {
      *  If any of the two names is not a user in this network,
      *  or if the "follows" addition failed for some reason, returns false. */
     public boolean addFollowee(String name1, String name2) {
+        if (name1 == null || name2 == null) {
+            return false;
+        }
+        if (name1.equalsIgnoreCase(name2)) {
+            return false;
+        }
         User user1 = getUser(name1);
         User user2 = getUser(name2);
-        if (user1 == null || user2 == null)
-         {
+    
+        if (user1 == null || user2 == null) {
             return false;
-         }
-         if (name1.equals(name2)) {
-            return false; 
         }
-        if (user1.follows(name2)) {
-            return false;  
+        if (user1.getfCount() == User.maxfCount) {
+            return false; 
         }
         return user1.addFollowee(name2);
     }
+        
     
     /** For the user with the given name, recommends another user to follow. The recommended user is
      *  the user that has the maximal mutual number of followees as the user with the given name. */
@@ -170,20 +174,12 @@ public class Network {
 
     // Returns a textual description of all the users in this network, and who they follow.
     public String toString() {
-        String finalS = "Network:\n";
+        String ans = "Network:";
         for (int i = 0; i < userCount; i++) {
-            String[] arr = users[i].getfFollows();  
-            String followers = "";
-            if (users[i].getfCount() > 0) {
-                for (int j = 0; j < users[i].getfCount(); j++) {
-                    if (j > 0) {
-                         followers += ", ";  
-                    }
-                    followers += arr[j];  
-                    }
-                }
-                finalS += users[i].getName() + " -> " + followers + "\n";
+            if (users[i] != null) {
+                ans += "\n" + users[i];
             }
-            return finalS;
         }
-}
+        return ans;
+    }
+ }
