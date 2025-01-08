@@ -47,6 +47,10 @@ public class Network {
     *  Otherwise, creates a new user with the given name, adds the user to this network, and returns true. */
     public boolean addUser(String name) {
 
+        if(userCount>=users.length)
+        {
+            return false;
+        }
          for (int i = 0; i < userCount; i++)
           {
             if(users[i].getName()!=null)
@@ -72,9 +76,11 @@ public class Network {
          {
             return false;
          }
-         if (user1.follows(name2)) 
-         {
-            return false;
+         if (name1.equals(name2)) {
+            return false; 
+        }
+        if (user1.follows(name2)) {
+            return false;  
         }
         return user1.addFollowee(name2);
     }
@@ -164,18 +170,20 @@ public class Network {
 
     // Returns a textual description of all the users in this network, and who they follow.
     public String toString() {
-        String finalS= "Network:\n";
-        for(int i=0;i<userCount;i++)
-        {
-             String [] arr= users[i].getfFollows();
-             String followers="";
-             for(int j=0;j<users[i].getfCount();j++)
-             {   
-                 followers=followers+ ", " + arr[j];
-             }
-             finalS= finalS+ users[i].getName()+" -> "+ followers + "\n";
+        String finalS = "Network:\n";
+        for (int i = 0; i < userCount; i++) {
+            String[] arr = users[i].getfFollows();  
+            String followers = "";
+            if (users[i].getfCount() > 0) {
+                for (int j = 0; j < users[i].getfCount(); j++) {
+                    if (j > 0) {
+                         followers += ", ";  
+                    }
+                    followers += arr[j];  
+                    }
+                }
+                finalS += users[i].getName() + " -> " + followers + "\n";
+            }
+            return finalS;
         }
-        return finalS;
-     }
-
 }
